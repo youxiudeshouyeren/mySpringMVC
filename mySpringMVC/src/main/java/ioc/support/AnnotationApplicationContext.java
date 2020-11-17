@@ -1,16 +1,15 @@
-package support;
+package ioc.support;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
-
-import interfaces.ApplicationContext;
-
-import interfaces.BeanRegister;
+import ioc.interfaces.*;
+import ioc.support.BeanDefinition;
 
 
 public class AnnotationApplicationContext implements ApplicationContext,BeanRegister{
@@ -38,6 +37,7 @@ public class AnnotationApplicationContext implements ApplicationContext,BeanRegi
 			
 			//2.载入
 			config.load(iStream);
+			System.out.println(config.toString());
 			
 			//3.注册
 			register();
@@ -85,7 +85,7 @@ public class AnnotationApplicationContext implements ApplicationContext,BeanRegi
     }
 	
 	public Object getBeans(String id) {
-		// TODO Auto-generated method stub
+		
 		return instanceMappingMap.get(id);
 	}
 	
@@ -94,22 +94,26 @@ public class AnnotationApplicationContext implements ApplicationContext,BeanRegi
     }
 
 	public <T> T getBean(String id, Class<T> clazz) {
-		// TODO Auto-generated method stub
+		System.out.println(instanceMappingMap.size());
+		for(Entry<String, Object> e:instanceMappingMap.entrySet()) {
+			System.out.println(e.getKey());
+		}
+		System.out.println("id"+id);
 		 return (T)instanceMappingMap.get(id);
 	}
 
 	public Map<String, Object> getBeans() {
-		// TODO Auto-generated method stub
+		
 		return instanceMappingMap;
 	}
 
 	public void registerBeanDefinition(List<BeanDefinition> bds) {
-		// TODO Auto-generated method stub
+		
 		beanDefinitions.addAll(bds);
 	}
 
 	public void registerInstancwMapping(String id, Object instance) {
-		// TODO Auto-generated method stub
+		
 		 instanceMappingMap.put(id,instance);
 	}
 

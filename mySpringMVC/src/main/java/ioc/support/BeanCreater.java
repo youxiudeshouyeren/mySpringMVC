@@ -1,8 +1,8 @@
-package support;
+package ioc.support;
 
 import java.util.List;
 
-import interfaces.BeanRegister;
+import ioc.interfaces.BeanRegister;
 
 
 /*

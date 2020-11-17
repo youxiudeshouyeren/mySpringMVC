@@ -1,4 +1,4 @@
-package support;
+package ioc.support;
 
 public class BeanDefinition {
 	private String id;
@@ -30,10 +30,10 @@ public class BeanDefinition {
 		try {
 			return clazz.newInstance();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return null;

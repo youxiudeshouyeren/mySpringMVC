@@ -1,8 +1,8 @@
-package interfaces;
+package ioc.interfaces;
 
 import java.util.List;
 
-import support.BeanDefinition;
+import ioc.support.BeanDefinition;
 
 public interface BeanRegister {
 	/*

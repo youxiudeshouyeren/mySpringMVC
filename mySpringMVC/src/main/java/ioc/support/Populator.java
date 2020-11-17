@@ -1,9 +1,9 @@
-package support;
+package ioc.support;
 
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import annotation.Autowire;
+import ioc.annotation.Autowire;
 
 /*
  * bean之间的依赖注入

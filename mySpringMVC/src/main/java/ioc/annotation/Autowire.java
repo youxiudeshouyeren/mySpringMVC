@@ -1,4 +1,4 @@
-package annotation;
+package ioc.annotation;
 
 import java.lang.annotation.*;
 

@@ -1,10 +1,10 @@
-package support;
+package ioc.support;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import annotation.Component;
-import annotation.Controller;
+import ioc.annotation.Component;
+import ioc.annotation.Controller;
 
 public class BeanDefinitionGenerator {
  

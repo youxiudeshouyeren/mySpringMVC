@@ -1,4 +1,4 @@
-package interfaces;
+package ioc.interfaces;
 
 import java.util.Map;
 
