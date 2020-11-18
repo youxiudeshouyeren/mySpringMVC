@@ -84,11 +84,7 @@ public class AnnotationApplicationContext implements ApplicationContext,BeanRegi
         parser.parse(config);
     }
 	
-	public Object getBeans(String id) {
-		
-		return instanceMappingMap.get(id);
-	}
-	
+
 	public Properties getConfig() {
         return this.config;
     }
@@ -115,6 +111,12 @@ public class AnnotationApplicationContext implements ApplicationContext,BeanRegi
 	public void registerInstancwMapping(String id, Object instance) {
 		
 		 instanceMappingMap.put(id,instance);
+	}
+
+	@Override
+	public Object getBean(String id) {
+		// TODO Auto-generated method stub
+		return instanceMappingMap.get(id);
 	}
 
 }

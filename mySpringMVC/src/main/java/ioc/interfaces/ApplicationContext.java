@@ -6,7 +6,7 @@ public interface ApplicationContext {
  /*
   * 根据id返回bean
   */
-	Object getBeans(String id);
+	Object getBean(String id);
 	
 	
 	/*
