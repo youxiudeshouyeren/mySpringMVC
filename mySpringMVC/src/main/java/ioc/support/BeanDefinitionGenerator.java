@@ -43,7 +43,14 @@ public class BeanDefinitionGenerator {
 
 
 			if(clazz.isAnnotationPresent(Controller.class)) {
-				idStrings=new String[] {clazz.getName()};
+				Controller controller=(Controller) clazz.getAnnotation(Controller.class);
+				if(controller.value().equals(""))
+				{
+					idStrings=new String[] {clazz.getName()};
+				}
+				else {
+					idStrings=new String[] {controller.value()};
+				}
 			}
 			else if(clazz.isAnnotationPresent(Component.class)) {
 				//以对象的方式返回该注解

@@ -3,7 +3,7 @@ package ioc.support;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import ioc.annotation.Autowire;
+import ioc.annotation.Autowired;
 
 /*
  * bean之间的依赖注入
@@ -26,10 +26,10 @@ public class Populator {
 		  //获取对象的字段 getDeclaredFields()返回Class中所有的字段，包括私有字段。
 		  Field[] fields=entry.getValue().getClass().getDeclaredFields();
 		  for(Field field:fields) {
-			  if(!field.isAnnotationPresent(Autowire.class))
+			  if(!field.isAnnotationPresent(Autowired.class))
 				  continue;
 			  
-			  Autowire autowire=field.getAnnotation(Autowire.class);
+			  Autowired autowire=field.getAnnotation(Autowired.class);
 			  //后去字段要注入的id value  为空则按类名  接口名自动注入
 			  String idString=autowire.value();
 			  if(idString.equals("")) {
@@ -40,6 +40,7 @@ public class Populator {
 			  try {
 				  //反射注入
 				  //待查！！！！
+				  System.out.println("autowire 依赖注入"+"  "+idString+"   "+entry.getValue()+"   "+(instanceMap.get(idString)));
 				  field.set(entry.getValue(), instanceMap.get(idString));
 				  
 			  }catch (Exception e) {

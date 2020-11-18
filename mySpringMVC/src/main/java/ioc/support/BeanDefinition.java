@@ -1,8 +1,16 @@
 package ioc.support;
 
-public class BeanDefinition {
-	private String id;
-	private Class clazz;
+import java.util.Objects;
+
+import ioc.interfaces.MyBeanDefinition;
+
+public class BeanDefinition implements MyBeanDefinition{
+	
+	private String id;//bean的id
+	
+	private Class clazz;//bean的类
+	
+	private String scope=BeanDefinition.SINGLETON;//默认为单例模式
 	
 	public BeanDefinition (String id,Class clazz) {
 		this.id=id;
@@ -26,6 +34,10 @@ public class BeanDefinition {
 		this.clazz = clazz;
 	}
 	
+	public void setScope(String scope) {
+		this.scope=scope;
+	}
+	
 	public Object getInstance() {
 		try {
 			return clazz.newInstance();
@@ -37,6 +49,25 @@ public class BeanDefinition {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	
+	@Override
+	public String getScope() {
+		
+		return this.scope;
+	}
+
+	@Override
+	public boolean isSingleton() {
+		
+		return Objects.equals(scope, MyBeanDefinition.SINGLETON);
+	}
+
+	@Override
+	public boolean isPrototype() {
+		
+		return Objects.equals(scope, MyBeanDefinition.PROTOTYPE);
 	}
 
 }

@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
+
+import ioc.annotation.Scope;
 import ioc.interfaces.*;
 import ioc.support.BeanDefinition;
 
@@ -90,12 +92,41 @@ public class AnnotationApplicationContext implements ApplicationContext,BeanRegi
     }
 
 	public <T> T getBean(String id, Class<T> clazz) {
+		
 		System.out.println(instanceMappingMap.size());
 		for(Entry<String, Object> e:instanceMappingMap.entrySet()) {
 			System.out.println(e.getKey());
 		}
-		System.out.println("id"+id);
+		
+		System.out.println("id   "+id);
+		
+		
+		
+		
 		 return (T)instanceMappingMap.get(id);
+	}
+	
+	
+	//根据传入的类寻找单例模式的bean
+	public <T> T getBean(Class<T> clazz) {
+		T t=null;//要返回的bean
+		if(clazz.getAnnotation(Scope.class).value().equals(MyBeanDefinition.SINGLETON)||clazz.getAnnotation(Scope.class)==null)
+		{
+			for(BeanDefinition beanDefinition:beanDefinitions) {
+			if(beanDefinitions.getClass().getName().equals(clazz.getName())) {
+				t=(T) instanceMappingMap.get(beanDefinition.getId()); //返回单例缓存中的bean
+			}
+		  }
+		}
+//		else {
+//			
+//			for(BeanDefinition beanDefinition:beanDefinitions) {
+//				if(beanDefinitions.getClass().getName().equals(clazz.getName())) {
+//					t=((T ? extends clo) instanceMappingMap.get(beanDefinition.getId())); //返回单例缓存中的bean的拷贝
+//				}
+//			  }
+//		}
+		return t;
 	}
 
 	public Map<String, Object> getBeans() {
@@ -115,7 +146,7 @@ public class AnnotationApplicationContext implements ApplicationContext,BeanRegi
 
 	@Override
 	public Object getBean(String id) {
-		// TODO Auto-generated method stub
+		
 		return instanceMappingMap.get(id);
 	}
 
