@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import ioc.annotation.Autowired;
+import ioc.annotation.Scope;
 
 /*
  * bean之间的依赖注入
@@ -41,7 +42,24 @@ public class Populator {
 				  //反射注入
 				  //待查！！！！
 				  System.out.println("autowire 依赖注入"+"  "+idString+"   "+entry.getValue()+"   "+(instanceMap.get(idString)));
-				  field.set(entry.getValue(), instanceMap.get(idString));
+				  
+				  //判断注入方式
+				  
+				  Class fieldClass=instanceMap.get(idString).getClass();
+				  boolean flag=true;//默认是单例模式
+				  if(fieldClass.isAnnotationPresent(Scope.class)) {
+					  Scope scope=(Scope) fieldClass.getAnnotation(Scope.class);
+					  if(scope.value().equals("prototype")) {
+						  flag=false;
+					  }
+				  }
+				  if(flag) {
+					  field.set(entry.getValue(), instanceMap.get(idString));
+				  }else {
+					  field.set(entry.getValue(), ObjectUtil.objToObj(instanceMap.get(idString), instanceMap.get(idString).getClass()));
+				  }
+				  
+				  
 				  
 			  }catch (Exception e) {
 				// TODO: handle exception

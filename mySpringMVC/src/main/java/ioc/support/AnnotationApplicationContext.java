@@ -93,18 +93,31 @@ public class AnnotationApplicationContext implements ApplicationContext,BeanRegi
 
 	public <T> T getBean(String id, Class<T> clazz) {
 		
-		System.out.println(instanceMappingMap.size());
-		for(Entry<String, Object> e:instanceMappingMap.entrySet()) {
-			System.out.println(e.getKey());
+		
+		Class thisClass=instanceMappingMap.get(id).getClass();
+		boolean flag=true;//默认为单例模式
+		
+		if(thisClass.isAnnotationPresent(Scope.class)) {
+			Scope scope=(Scope) thisClass.getAnnotation(Scope.class);
+			if(scope.value().equals("prototype")) {
+				flag=false;
+			}
 		}
 		
-		System.out.println("id   "+id);
+		if(flag) {
+			return (T) instanceMappingMap.get(id);//单例模式直接返回
+		}else {
+			try {
+				return (T) ObjectUtil.objToObj(instanceMappingMap.get(id), instanceMappingMap.get(id).getClass());//返回深度拷贝的对象
+			} catch (InstantiationException | IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return (T) instanceMappingMap.get(id); 
 		
-		
-		
-		
-		 return (T)instanceMappingMap.get(id);
 	}
+	
 	
 	
 	//根据传入的类寻找单例模式的bean
@@ -147,7 +160,28 @@ public class AnnotationApplicationContext implements ApplicationContext,BeanRegi
 	@Override
 	public Object getBean(String id) {
 		
-		return instanceMappingMap.get(id);
+		Class thisClass=instanceMappingMap.get(id).getClass();
+		boolean flag=true;//默认为单例模式
+		
+		if(thisClass.isAnnotationPresent(Scope.class)) {
+			Scope scope=(Scope) thisClass.getAnnotation(Scope.class);
+			if(scope.value().equals("prototype")) {
+				flag=false;
+			}
+		}
+		
+		if(flag) {
+			return instanceMappingMap.get(id);//单例模式直接返回
+		}else {
+			try {
+				return ObjectUtil.objToObj(instanceMappingMap.get(id), instanceMappingMap.get(id).getClass());//返回深度拷贝的对象
+			} catch (InstantiationException | IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return instanceMappingMap.get(id); 
+		
 	}
 
 }
