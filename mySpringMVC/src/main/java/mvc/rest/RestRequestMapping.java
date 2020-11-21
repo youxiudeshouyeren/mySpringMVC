@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE,ElementType.METHOD})//作用在类和方法 仿照springmvc的套路来
+@Target({ElementType.TYPE,ElementType.METHOD})//作用在类和方法 
 @Documented
 public @interface RestRequestMapping {
 

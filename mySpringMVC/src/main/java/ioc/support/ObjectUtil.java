@@ -8,15 +8,8 @@ import java.util.List;
  
 
 public class ObjectUtil {
-    /**
-     * 对象转化
-     *
-     * @param source
-     * @param targetClazz
-     * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     */
+  
+	//返回对象的深拷贝
     public static Object objToObj(Object source, Class<?> targetClazz) throws InstantiationException, IllegalAccessException {
         Object target = targetClazz.newInstance();
         Class sourceClazz = source.getClass();

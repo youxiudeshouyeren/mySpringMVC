@@ -8,6 +8,7 @@ import ioc.annotation.Controller;
 
 public class BeanDefinitionGenerator {
  
+	//生成bean的描述
 	public static List<BeanDefinition> generate(String className) {
            try {
         	   Class clazz=Class.forName(className);

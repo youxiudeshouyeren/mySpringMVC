@@ -9,7 +9,7 @@ import ioc.interfaces.BeanRegister;
 
 public class BeanDefinitionParser {
    //配置的扫描包的key
-	public static final String SCAN_PACKAGE="scanPackage";//此处可抽为单独的parameter文件
+	public static final String SCAN_PACKAGE="scanPackage";
 	
 	//容器注册对象
 	private BeanRegister register;
@@ -18,6 +18,7 @@ public class BeanDefinitionParser {
 		this.register=register;
 	}
 	
+	//解析bean的信息
 	public void parse(Properties properties) {
 		//获取要扫描的包
 		String packageName=properties.getProperty(SCAN_PACKAGE);
@@ -26,6 +27,7 @@ public class BeanDefinitionParser {
 		doRegister(packageName);
 	}
 	
+	//注册BeanDefinition
 	public void doRegister(String packageName) {
 		
 		System.out.println(packageName);

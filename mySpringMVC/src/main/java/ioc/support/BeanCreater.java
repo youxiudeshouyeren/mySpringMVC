@@ -16,12 +16,14 @@ public class BeanCreater {
 	   this.register=register;
    }
    
+   //遍历BeanDefinition列表 调用生成函数
    public void create(List<BeanDefinition> bds) {
 	   for (BeanDefinition bd:bds) {
 		   doCreate(bd);
 	   }
    }
    
+   //生成bean
    private void doCreate(BeanDefinition bd) {
 	   Object instanceObject=bd.getInstance();
 	   this.register.registerInstancwMapping(bd.getId(), instanceObject);

@@ -120,7 +120,7 @@ public class AnnotationApplicationContext implements ApplicationContext,BeanRegi
 	
 	
 	
-	//根据传入的类寻找单例模式的bean
+	//根据传入的类寻找bean
 	public <T> T getBean(Class<T> clazz) {
 		T t=null;//要返回的bean
 		if(clazz.getAnnotation(Scope.class).value().equals(MyBeanDefinition.SINGLETON)||clazz.getAnnotation(Scope.class)==null)

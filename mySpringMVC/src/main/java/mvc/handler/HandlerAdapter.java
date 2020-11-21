@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class HandlerAdapter {
 	//保存对应的RequestParam value 参数的位置
-	//或者HttpRequestServlet.getName（） index
+	
 	private Map<String, Integer> paramType;
 	
 	
@@ -64,16 +64,10 @@ public class HandlerAdapter {
 				
 			}
 		}
-//
-//		//最后反射调用Controller的method方法
-//		 //最后反射调用Controller的method方法
-//        if (handler.getMethod().getReturnType() == String.class) {
-//            String viewName = (String) handler.getMethod().invoke(handler.getController(), paramValues);
-//            render(req, resp, viewName);
-//        } else {
+
             handler.getMethod().invoke(handler.getController(), paramValues);
         }	
-	//}
+	
 	
 	
 	
@@ -90,37 +84,6 @@ public class HandlerAdapter {
         }
     }
 	
-//	 private void render(HttpServletRequest request, HttpServletResponse res, String viewName) throws Exception {
-//	        String prefix = "view/";
-//	        String suffix = ".jsp";
-//	        String url = prefix + viewName + suffix;
-//	        String contentType = "text/html";
-//	        String classpath = this.getClass().getResource("/").getPath().replaceFirst("/", "").replace("/classes","");
-//	        String filePhat = classpath + url;
-//	        System.out.println(filePhat);
-//	        File file = new File(filePhat);
-//	        String content = "";
-//	        if (file.exists()) {
-//	            InputStreamReader read = new InputStreamReader(
-//	                    new FileInputStream(file));
-//	            BufferedReader bufferedReader = new BufferedReader(read);
-//	            String lineTxt = null;
-//	            while ((lineTxt = bufferedReader.readLine()) != null) {
-//	            	
-//	            	
-//	            	//注意jsp中模板的替换
-//	                content += lineTxt;
-//	            }
-//	            bufferedReader.close();
-//	            read.close();
-//	        }
-//	        request.getRequestDispatcher(filePhat).forward(request, res);
-////	        System.out.println(content);
-////	        res.setStatus(200);
-////	        res.setContentType(contentType);
-////	        res.getWriter().print(content);
-//
-//	    }
 
 	
 	

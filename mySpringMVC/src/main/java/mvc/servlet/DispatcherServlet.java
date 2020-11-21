@@ -45,12 +45,7 @@ public class DispatcherServlet extends HttpServlet{
 		//创建ApplicationContext上下文，启动bean的解析 创建 注入等过程
 		AnnotationApplicationContext context=new AnnotationApplicationContext(locationString);
 		
-		//请求解析
-        initMultipartResolver(context);
-        //多语言、国际化
-        initLocaleResolver(context);
-        //主题View层的
-        initThemeResolver(context);
+	
 
         //解析url和Method的关联关系
         initHandlerMappings(context);
@@ -58,29 +53,12 @@ public class DispatcherServlet extends HttpServlet{
         initHandlerAdapters(context);
 
         
-        //视图转发（根据视图名字匹配到一个具体模板）
-        initRequestToViewNameTranslator(context);
-
-        //解析模板中的内容（拿到服务器传过来的数据，生成HTML代码）
-        initViewResolvers(context);
-
-        initFlashMapManager(context);
+    
 
         System.out.println("GPSpring MVC is init.");
         
     }
 
-    private void initFlashMapManager(AnnotationApplicationContext context) {
-    }
-
-    private void initViewResolvers(AnnotationApplicationContext context) {
-    }
-
-    private void initRequestToViewNameTranslator(AnnotationApplicationContext context) {
-    }
-
-    private void initHandlerExceptionResolvers(AnnotationApplicationContext context) {
-    }
 
     private void initHandlerAdapters(AnnotationApplicationContext context) {
     	
@@ -172,14 +150,7 @@ public class DispatcherServlet extends HttpServlet{
         }
     }
 
-    private void initThemeResolver(AnnotationApplicationContext context) {
-    }
 
-    private void initLocaleResolver(AnnotationApplicationContext context) {
-    }
-
-    private void initMultipartResolver(AnnotationApplicationContext context) {
-    }
 
     //servlet调用
     @Override
@@ -192,14 +163,7 @@ public class DispatcherServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         try {
-//        	 String contextPath = req.getContextPath();
-//        	 String url = req.getRequestURI();
-//        	  url = url.replace(contextPath,"").replaceAll("/+","/");
-//        	  System.out.println("调度：  url是"+url);
-//        	  if(url.contains("jsp"))
-//        	  {
-//        		 
-//        	      return;}
+        	req.setCharacterEncoding("UTF-8");
             doDispatch(req,resp);
         } catch (Exception e) {
             e.printStackTrace();
@@ -248,18 +212,14 @@ public class DispatcherServlet extends HttpServlet{
         //遍历handlermapping，找到url匹配的handler
         for (Handler handler:handlerMapping){
             if(handler.getPattern().matcher(url).matches()){
-                //匹配到就把handler返回
-            	if(req.getParameter("_method")!=null&&!req.getParameter("_method").equals("")) {
+                //匹配到就把handler返回 
+            	//将post请求转换为rest风格
+            	if(req.getParameter("_method")!=null&&!req.getParameter("_method").equals("")&&req.getMethod().equalsIgnoreCase("POST")) {
             		String restmethodString=(String) req.getParameter("_method");
             		System.out.println(restmethodString+"获得的method");
             		RequestMethod remMethod = null;
             		switch (restmethodString) {
-					case "get":
-					{
-						remMethod=RequestMethod.GET;
-						System.out.println("捕捉到GET");
-						break;
-					}
+				
 					case "put":
 					{
 						remMethod=RequestMethod.PUT;
@@ -299,6 +259,18 @@ public class DispatcherServlet extends HttpServlet{
         
         for (Handler handler:handlerMapping){
             if(handler.getPattern().matcher(url).matches()){
+            	if(req.getMethod().equalsIgnoreCase("GET"))
+            	{
+            		if(handler.getRestMethod()==RequestMethod.GET)
+            			return handler;
+            	}
+            	
+            }
+            }
+        
+        for (Handler handler:handlerMapping){
+            if(handler.getPattern().matcher(url).matches()){
+            	
             	return handler;//如果上面没有匹配成功则从这个返回
             }
             }

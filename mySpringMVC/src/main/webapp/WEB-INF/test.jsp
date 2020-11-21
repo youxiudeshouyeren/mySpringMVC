@@ -5,17 +5,13 @@
     <title>View</title>
 </head>
 <body>
-<h1>hello me</h1>
- <%
-                  out.println("Hello 史家兴！");
-           %>
-<a href="/mySpringMVC/web/test.do">点</a>
-<%
-out.println("你的 IP 地址 " + request.getRemoteAddr());
-%>
-<%
-String name=(String)request.getAttribute("name");
-out.write("谁是狗"+name);
-%>
+<h1>框架测试</h1>
+
+<a href="/mySpringMVC/web/view.do">学生管理</a>
+
+<a href="/mySpringMVC/web/file.do">文件上传</a>
+
+
+
 </body>
 </html>

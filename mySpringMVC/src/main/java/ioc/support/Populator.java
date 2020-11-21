@@ -15,9 +15,10 @@ public class Populator {
 	  
 	
 }
+  //依赖注入
   public void populate(Map<String, Object> instanceMap) {
 	  
-	  //首先判断ios容器中有没有东西
+	  //首先判断ioc容器中有没有东西
 	  if(instanceMap.isEmpty())
 		  return;
 	  
@@ -40,7 +41,7 @@ public class Populator {
 			  field.setAccessible(true);
 			  try {
 				  //反射注入
-				  //待查！！！！
+				  
 				  System.out.println("autowire 依赖注入"+"  "+idString+"   "+entry.getValue()+"   "+(instanceMap.get(idString)));
 				  
 				  //判断注入方式

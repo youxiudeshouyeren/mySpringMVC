@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import ioc.interfaces.*;
 import ioc.support.AnnotationApplicationContext;
@@ -27,123 +28,124 @@ import mvc.rest.RestRequestMapping;
 @RequestMapping("/web")
 public class MyControllor {
 
-    @Autowired("MyService")
-    private MyService service;
     
-
+    @Autowired("MyDB")
+    private StudentDB db;
     
+    
+    //首页 
     @RequestMapping("/test.do")
-    @RestRequestMapping(method = RequestMethod.GET)
-    public void testGet(HttpServletRequest req,HttpServletResponse resp,@RequestParam("word") String word) throws ServletException{
-    	{
+    public void testMVC(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    	
+    	req.getRequestDispatcher("/WEB-INF/test.jsp").forward(req, res);
+    	
+    }
+    
+   
+    
+    //编辑分发 分为新增与更改
+    @RequestMapping("/edit.do")
+    public void editStudent(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    	if(req.getParameter("id")==null) {
     		
-    		try {
-    			System.out.println("这是GET");
-    			req.getRequestDispatcher("/WEB-INF/test2.jsp").forward(req, resp);
-				
-				
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    }
-        
-        
-    }
-    
-    
-    @RequestMapping("/test.do")
-    @RestRequestMapping(method = RequestMethod.PUT)
-    public void testPut(HttpServletRequest req,HttpServletResponse resp,@RequestParam("word") String word) throws ServletException{
-    	{
     		
-    		try {
-    			System.out.println("这是狗");
-    			req.getRequestDispatcher("/WEB-INF/test2.jsp").forward(req, resp);
-				
-				
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    }
-        
-        
-    }
-    
-    
-    @RequestMapping("/test.do")
-    @RestRequestMapping(method = RequestMethod.DELETE)
-    public void testDelete(HttpServletRequest req,HttpServletResponse resp,@RequestParam("word") String word) throws ServletException{
-    	{
     		
-    		try {
-    			System.out.println("这是DELETE");
-    			req.getRequestDispatcher("/WEB-INF/test2.jsp").forward(req, resp);
-				
-				
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    }
-        
-        
-    }
-    
-    
-    @RequestMapping("/test.do")
-    @RestRequestMapping(method = RequestMethod.POST)
-    public void testPost(HttpServletRequest req,HttpServletResponse resp,@RequestParam("word") String word) throws ServletException{
-    	{
+    		req.getRequestDispatcher("/WEB-INF/addStu.jsp").forward(req, res);
+    	}else {
     		
-    		try {
-    			
-    			
-    			System.out.println("这是你爹的posy");
-    			req.getRequestDispatcher("/WEB-INF/test2.jsp").forward(req, resp);
-				
-				
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    }
-        
-        
-    }
-    
-    
-    
-    @RequestMapping("/view.do")
-    public void view(HttpServletRequest req, HttpServletResponse res,@RequestParam("word") String word) throws ServletException, IOException{
-    	//req.getRequestDispatcher(req.getContextPath()+"/test.jsp").forward(req, res);
-    	ArrayList<String[]> list=new ArrayList<String[]>();
-    	ApplicationContext context=new AnnotationApplicationContext("applicationContext.properties");
-    	for(int i=0;i<10;i++) {
-    		//MyStudent myStudent=(MyStudent) context.getBean("MyStudent",MyStudent.class);
-    		MyStudent myStudent=new MyStudent();
-    		myStudent.setClassString("计算机"+(i+1));
-    		myStudent.setAge((i+5));
-    		myStudent.setIdString(i+"");
-    		myStudent.setNameString("张"+i);
-    	     list.add(new String[] {myStudent.getIdString(),myStudent.getNameString(),myStudent.getAge()+"",myStudent.getClassString()});
+    	    MyStudent student=db.getStudent((String)req.getParameter("id"));
+    	    req.setAttribute("student", student);
+    		req.getRequestDispatcher("/WEB-INF/updateStu.jsp").forward(req, res);
     	}
-    	req.setAttribute("list", list);
+    }
+    
+    
+    //返回所有信息
+    @RequestMapping("/view.do")
+    @RestRequestMapping(method = RequestMethod.GET)
+    public void viewALL(HttpServletRequest req, HttpServletResponse res,@RequestParam("word") String word) throws ServletException, IOException{
+    	
+    	ArrayList<MyStudent> students=db.qureyAll();
+    	req.setAttribute("list", students);
     	
     	
     	req.getRequestDispatcher("/WEB-INF/student.jsp").forward(req, res);
     	
-    	//"/WEB-INF/jsp/view.jsp"
+    	
+        
+    }
+    
+    @RequestMapping("/view.do")
+    @RestRequestMapping(method = RequestMethod.POST)
+    public void addStu(HttpServletRequest req, HttpServletResponse res,@RequestParam("word") String word) throws ServletException, IOException{
+    	
+    	MyStudent student=new MyStudent();
+    	System.out.println((String)req.getParameter("classString"));
+    	student.setClassString((String)req.getParameter("classString"));
+    	student.setAge(Integer.parseInt((String)req.getParameter("age")));
+    	student.setNameString((String)req.getParameter("nameString"));
+    	student.setIdString((String)req.getParameter("uid"));
+    	
+    	db.addStudent(student);//添加
+    	
+    	ArrayList<MyStudent> students=db.qureyAll();
+    	req.setAttribute("list", students);
+    	
+    	
+    	req.getRequestDispatcher("/WEB-INF/student.jsp").forward(req, res);
+    	
+    	
+        
+    }
+    
+    @RequestMapping("/view.do")
+    @RestRequestMapping(method = RequestMethod.DELETE)
+    public void deleteStu(HttpServletRequest req, HttpServletResponse res,@RequestParam("word") String word) throws ServletException, IOException{
+    	
+    	db.deleteStudent((String)req.getParameter("id"));
+    	
+    	
+    	
+    	ArrayList<MyStudent> students=db.qureyAll();
+    	req.setAttribute("list", students);
+    	
+    	
+    	req.getRequestDispatcher("/WEB-INF/student.jsp").forward(req, res);
+    	
+    	
+    	
+        
+    }
+    
+    @RequestMapping("/view.do")
+    @RestRequestMapping(method = RequestMethod.PUT)
+    public void updateStu(HttpServletRequest req, HttpServletResponse res,@RequestParam("word") String word) throws ServletException, IOException{
+    	
+    	
+    	MyStudent student=db.getStudent((String)req.getParameter("id"));
+    	student.setClassString((String)req.getParameter("classString"));
+    	student.setAge(Integer.parseInt((String)req.getParameter("age")));
+    	student.setNameString((String)req.getParameter("nameString"));
+    	student.setIdString((String)req.getParameter("uid"));
+    	
+    	ArrayList<MyStudent> students=db.qureyAll();
+    	req.setAttribute("list", students);
+    	
+    	
+    	req.getRequestDispatcher("/WEB-INF/student.jsp").forward(req, res);
+    	
+    	
         
     }
     
     @RequestMapping("/file.do")
     public void fileTest(HttpServletRequest request, HttpServletResponse response,@RequestParam("word") String word) throws ServletException, IOException{
+    	
+    	if(request.getMethod().equalsIgnoreCase("get")) {
+    		request.getRequestDispatcher("/WEB-INF/testFile.jsp").forward(request, response);
+    	}else {
+    		
+    	
     	 try{
              response.setContentType("text/html;charset=utf-8");
 //             创建DiskFileItemFactory工厂对象
@@ -229,7 +231,7 @@ public class MyControllor {
              throw new RuntimeException(e);
          }
      }
- 
+    }
     }
    
 
