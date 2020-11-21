@@ -75,6 +75,8 @@ public class MyControllor {
         
     }
     
+    
+    //新建资源
     @RequestMapping("/view.do")
     @RestRequestMapping(method = RequestMethod.POST)
     public void addStu(HttpServletRequest req, HttpServletResponse res,@RequestParam("word") String word) throws ServletException, IOException{
@@ -98,6 +100,8 @@ public class MyControllor {
         
     }
     
+    
+    //删除资源
     @RequestMapping("/view.do")
     @RestRequestMapping(method = RequestMethod.DELETE)
     public void deleteStu(HttpServletRequest req, HttpServletResponse res,@RequestParam("word") String word) throws ServletException, IOException{
@@ -117,6 +121,8 @@ public class MyControllor {
         
     }
     
+    
+    //修改资源
     @RequestMapping("/view.do")
     @RestRequestMapping(method = RequestMethod.PUT)
     public void updateStu(HttpServletRequest req, HttpServletResponse res,@RequestParam("word") String word) throws ServletException, IOException{
@@ -138,6 +144,8 @@ public class MyControllor {
         
     }
     
+    
+    //文件上传测试
     @RequestMapping("/file.do")
     public void fileTest(HttpServletRequest request, HttpServletResponse response,@RequestParam("word") String word) throws ServletException, IOException{
     	
@@ -187,7 +195,7 @@ public class MyControllor {
                          writer.print("上传的文件名称是："+filename+"<br />");
 //                         保持文件名唯一
                          filename=filename.replaceAll("\\\\", "_").replaceAll(":", "");
-                       //  filename= UUID.randomUUID().toString()+"_"+filename;
+                       filename= UUID.randomUUID().toString().substring(0,10)+"_"+filename;
                         
                          
                         String parentPathString="C:/Users/syr/Desktop/服务器测试文件上传/";

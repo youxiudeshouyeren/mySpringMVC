@@ -31,7 +31,8 @@ public class MyService {
     
     public static void main(String[] args) {
 		ApplicationContext context=new AnnotationApplicationContext("applicationContext.properties");
-    	MyService myService=context.getBean("MyService",MyService.class);
+    	MyService myService1=context.getBean("MyService",MyService.class);
+    	myService1.student1.print();
     	
 	}
 }

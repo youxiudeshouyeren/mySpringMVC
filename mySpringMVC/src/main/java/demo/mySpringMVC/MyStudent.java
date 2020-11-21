@@ -6,6 +6,13 @@ import ioc.annotation.Scope;
 @Component("demo.mySpringMVC.MyStudent")
 @Scope("prototype")
 public class MyStudent {
+	
+	
+	public void print() {
+	System.out.println("this message is from myStudent!");
+	
+}
+	
 	private String idString;
     public String getIdString() {
 		return idString;
@@ -34,4 +41,5 @@ public class MyStudent {
 	public void setClassString(String classString) {
 		this.classString = classString;
 	}
+	
 }
